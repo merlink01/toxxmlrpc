@@ -40,8 +40,7 @@ server = toxxmlrpc.Toxxmlrpc_Server(object_to_serve(), './tox_xmlrpc_server', PA
 serveraddress = server.client.get_address()
 server.start()
 print 'Server started with Pubkey: %s'%serveraddress
-while 1:
-    time.sleep(1)
+
 
 Create Client:
 
