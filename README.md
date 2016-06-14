@@ -24,7 +24,9 @@ sudo  python setup.py install
 
 #Usage 
 
+```python
 Create Server:
+
 PASSWORD = '123456'
 
 import time
@@ -56,7 +58,7 @@ print ''
 
 client.stop()
 server.stop()
-
+```
 More Informations could be found in the examples.
 
 
