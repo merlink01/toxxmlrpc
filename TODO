@@ -1,0 +1,4 @@
+Password is encrypted, but is it secure?
+Implement a second authorisation step after both clients are connected.
+
+Make data_send, data_recv in client.py more stable.
