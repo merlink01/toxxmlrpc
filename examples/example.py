@@ -59,13 +59,14 @@ client = toxxmlrpc.Toxxmlrpc_Client( './tox_xmlrpc_client_reverse', PASSWORD, di
 clientaddress = client.client.get_address()
 client.start()
 print 'Client started with Pubkey: %s'%clientaddress
-print ''
+
 
 
 server = toxxmlrpc.Toxxmlrpc_Server(test(), './tox_xmlrpc_server_reverse', PASSWORD, clientaddress, disable_auto_login=True)
 serveraddress = server.client.get_address()
 server.start()
 print 'Server started with Pubkey: %s'%serveraddress
+print ''
 
 print 'Test Ping'
 assert client.ping(True) == 'pong'
@@ -88,6 +89,7 @@ client = toxxmlrpc.Toxxmlrpc_Client( './tox_xmlrpc_client_para', disable_auto_lo
 clientaddress = client.client.get_address()
 client.start()
 print 'Client started with Pubkey: %s'%clientaddress
+print ''
 
 server.client.friend_add_without_request(clientaddress)
 client.client.friend_add_without_request(serveraddress)

@@ -11,7 +11,9 @@ import base64
 
 logger = logging.getLogger('Toxclient')
 
-
+BOOTSTRAP = []
+BOOTSTRAP.append(("144.76.60.215",33445,"04119E835DF3E78BACF0F84235B300546AF8B936F035185E2A8E9E0A67C8924F"))
+BOOTSTRAP.append(("195.154.119.113",33445,"E398A69646B8CEACA9F0B84F553726C1C49270558C57DF5F3C368F05A7D71354"))
 
 
 from toxpython import Tox
@@ -63,15 +65,17 @@ class Toxclient(Tox,threading.Thread):
 
         self.save(self.savepath)
         self.set_status(TOX_USER_STATUS_NONE)
-
-        self.bootstrap("195.154.119.113",33445,"E398A69646B8CEACA9F0B84F553726C1C49270558C57DF5F3C368F05A7D71354")
-        if(self.self_get_connection_status() == False):
-            self.status = 'offline'
-            logger.info('Offline')
-        else:
-            self.status = 'online'
-            logger.info('Online')
-
+        
+        self.status = 'offline'
+        bootstrap_ok = False
+        while not bootstrap_ok:
+            for server in BOOTSTRAP:
+                bootstrap_ok = self.bootstrap("144.76.60.215",33445,"04119E835DF3E78BACF0F84235B300546AF8B936F035185E2A8E9E0A67C8924F")
+                if bootstrap_ok:
+                    break
+        if not bootstrap_ok:
+            logger.warning('Bootstrap Error')
+                    
     def get_friend_list_extended(self):
         friend_list = {}
         

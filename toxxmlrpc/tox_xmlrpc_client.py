@@ -54,7 +54,8 @@ class Toxxmlrpc_Client():
         self.client.stop()
 
     def __request(self,methodname,args):
-        data = xmlrpclib.dumps(args,methodname)
+        logger.info('Execute: %s%s'%(methodname,repr(args)))
+        data = xmlrpclib.dumps(args,methodname,allow_none=True)
 
         self.exec_lock.acquire()
         if not self.client.data_send(0,data,self.timeout):
@@ -74,26 +75,12 @@ class Toxxmlrpc_Client():
             time.sleep(0.1)
         self.exec_lock.release()
 
-        returndata = xmlrpclib.loads(recdata['data'])
+        returndata = xmlrpclib.loads(recdata['data'],use_datetime=True)
+        logger.info('got %s'%str(returndata))
         return returndata[0][0]
 
     def __getattr__(self, name):
         # magic method dispatcher
         return _Method(self.__request, name)
 
-if __name__ == '__main__':
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)
-    fmt_string = "[%(levelname)-7s]%(asctime)s.%(msecs)-3d %(name)s Thread:%(thread)s/%(module)s[%(lineno)-3d]/%(funcName)-10s  %(message)-8s "
-    formatter = logging.Formatter(fmt_string)
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
-    t = Toxxmlrpc_Client('./tox_xmlrpc_client','123456','1CFE9A98D6FF924D569732A93F32FC2787F78676931ED77259E586DFABFDB67190C2926CE00A')
-    t.start()
-    try:
-        print t.ping()
-    except:
-        print 'error'
-    t.stop()
+
